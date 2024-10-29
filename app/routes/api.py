@@ -1,8 +1,11 @@
-# app/routes/api.py
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
-api_bp = Blueprint("api", __name__)
+# Define the blueprint
+api_bp = Blueprint('api', __name__)
 
-@api_bp.route("/ping", methods=["GET"])
+@api_bp.route('/ping', methods=['GET'])
 def ping():
-    return {"message": "pong"}
+    """
+    Health check endpoint to ensure the server is running.
+    """
+    return jsonify({"message": "pong"}), 200
