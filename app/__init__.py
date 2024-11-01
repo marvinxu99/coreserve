@@ -2,7 +2,11 @@ import os
 from datetime import timedelta
 from flask import Flask, session
 from .extensions import db, migrate
-from .routes import api_bp, register_oauth_routes
+from .routes import (
+    api_bp, 
+    register_oauth_routes, 
+    patient_bp 
+)
 from .config import Config
 
 
@@ -42,5 +46,6 @@ def create_app(config_class=Config):
     # Register Blueprints
     app.register_blueprint(api_bp, url_prefix='/api')
     register_oauth_routes(app)
+    app.register_blueprint(patient_bp)
 
     return app
