@@ -340,7 +340,7 @@ def SU_codevalues_cs24(db):
                 display_key = re.sub('[^0-9a-zA-Z]+', '', cv[1]).upper()    # remove non-alphanumeric characters
             )
 
-def SU_codevalues_cs34():
+def SU_codevalues_cs34(db):
     """ Codeset 34: Medical Service """
     codes = (
         'Allergy and Immunology',
@@ -482,7 +482,7 @@ def SU_codevalues_cs48(db):
             )
 
 
-def SU_codevalues_cs53():
+def SU_codevalues_cs53(db):
     """ Creating System Use (SU) code values - Codeset 53: Event Class """
     event_classes = (
         'Addendum',
@@ -531,7 +531,7 @@ def SU_codevalues_cs53():
             )
 
 
-def SU_codevalues_cs68():
+def SU_codevalues_cs68(db):
     """ Codeset 68: Admit Mode """
     code_values = (
         'Ground Ambulance Only',
@@ -552,7 +552,7 @@ def SU_codevalues_cs68():
             )
 
 
-def SU_codevalues_cs69():
+def SU_codevalues_cs69(db):
     """ Codeset 69: Encounter Type Class """
     codes = (
         'Blood donation',
@@ -586,7 +586,7 @@ def SU_codevalues_cs69():
             )
 
 
-def SU_codevalues_cs71():
+def SU_codevalues_cs71(db):
     """ Codeset 71: Encounter Type """
     codes = (
         'Emergency',
@@ -642,7 +642,7 @@ def SU_codevalues_cs71():
             )
 
 
-def SU_codevalues_cs79():
+def SU_codevalues_cs79(db):
     """ Creating System Use (SU) code values - Codeset 79: Task Status """
     statuses = (
         'Cancelled',
@@ -691,7 +691,7 @@ def SU_codevalues_cs79():
                 )
 
 
-def SU_codevalues_cs87():
+def SU_codevalues_cs87(db):
     """ Codeset 79: Confidential Level.
         Identifies a level of security that may restrict access or release of information.
     """
@@ -714,7 +714,7 @@ def SU_codevalues_cs87():
             )
 
 
-def SU_codevalues_cs88():
+def SU_codevalues_cs88(db):
     """ Codeset 88: Position """
     code_values = (
         'Ambulatory - Nurse',
@@ -1025,7 +1025,7 @@ def SU_codevalues_cs88():
             )
 
 
-def SU_codevalues_cs89():
+def SU_codevalues_cs89(db):
     """ Creating System Use (SU) code values - Codeset 48: Contributor system"""
     contributors = (
         '3M CODING AND REIMBURSEMENT',
@@ -1348,7 +1348,7 @@ def SU_codevalues_cs89():
         session.commit()
 
 
-def SU_codevalues_cs106():
+def SU_codevalues_cs106(db):
     """ Codeset 106: Activity Type """
     code_values = (
         'Patient Care',
@@ -1664,7 +1664,7 @@ def SU_codevalues_cs106():
             )
 
 
-def SU_codevalues_cs120():
+def SU_codevalues_cs120(db):
     """ Codeset 120: Compression Code Value """
     code_values = (
         'No Compression',
@@ -1684,7 +1684,7 @@ def SU_codevalues_cs120():
             )
 
 
-def SU_codevalues_cs261():
+def SU_codevalues_cs261(db):
     """ Codeset 261: Encounter Status Codes """
     codes = (
         'Active',
@@ -1711,7 +1711,7 @@ def SU_codevalues_cs261():
             )
 
 
-def SU_codevalues_cs263():
+def SU_codevalues_cs263(db):
     """ Codeset 263: Alias Pool """
     codes = (
         'BC PHN',
@@ -1802,7 +1802,7 @@ def SU_codevalues_cs263():
             )
 
 
-def SU_codevalues_cs289():
+def SU_codevalues_cs289(db):
     """ Codeset 289: Default Result Type """
     codes = (
         'Text',
@@ -1841,7 +1841,7 @@ def SU_codevalues_cs289():
             )
 
 
-def SU_codevalues_cs302():
+def SU_codevalues_cs302(db):
     """ Codeset 302: Person Type """
     codes = (
         'Contributor System',
@@ -1863,7 +1863,7 @@ def SU_codevalues_cs302():
             )
 
 
-def SU_codevalues_cs321():
+def SU_codevalues_cs321(db):
     """ Codeset 321: Encounter Class """
     codes = (
         'Emergency',
@@ -1884,7 +1884,7 @@ def SU_codevalues_cs321():
                 display_key = re.sub('[^0-9a-zA-Z]+', '', c).upper()  # remove non-alphanumeric characters
             )
 
-def SU_codevalues_cs400():
+def SU_codevalues_cs400(db):
     """ Codeset 400: Source Vocabulary
         The internal or external vocabulary or lexicon that contributed the string, e.g. ICD9, SNOMED, etc.
     """
@@ -1907,7 +1907,7 @@ def SU_codevalues_cs400():
         session.commit()
 
 
-def SU_codevalues_cs4010():
+def SU_codevalues_cs4010(db):
     """ Creating System Use (SU) code values - Codeset 4010: Task Priority Code """
     priority_codes = (
         'NOW',
@@ -1927,7 +1927,7 @@ def SU_codevalues_cs4010():
             )
 
 
-def SU_codevalues_cs6000():
+def SU_codevalues_cs6000(db):
     """ Codeset 6000: Catalog Type """
     catalog_types = (
         'Ambulatory POC',
@@ -1997,7 +1997,7 @@ def SU_codevalues_cs6000():
             )
 
 
-def SU_codevalues_cs6003():
+def SU_codevalues_cs6003(db):
     """ Codeset 6003: Order Action Type """
     code_values = (
         'Activate',
@@ -2042,7 +2042,7 @@ def SU_codevalues_cs6003():
             )
 
 
-def SU_codevalues_cs6004():
+def SU_codevalues_cs6004(db):
     """ Codeset 6004: Order Status """
     code_values = (
         'Canceled',
@@ -2074,7 +2074,7 @@ def SU_codevalues_cs6004():
             )
 
 
-def SU_codevalues_cs6006():
+def SU_codevalues_cs6006(db):
     """ Codeset 6006: Communication Type """
     code_values = (
         'No Cosignature Required',
@@ -2099,7 +2099,7 @@ def SU_codevalues_cs6006():
             )
 
 
-def SU_codevalues_cs6011():
+def SU_codevalues_cs6011(db):
     """ Codeset 6011: Mnemonic Type """
     code_values = (
         'Ancillary',
@@ -2131,7 +2131,7 @@ def SU_codevalues_cs6011():
             )
 
 
-def SU_codevalues_cs6014():
+def SU_codevalues_cs6014(db):
     """ Creating System Use (SU) code values - Codeset 6014: Reschedule Reason """
     reasons = (
         'Charted on Incorrect Patient',
@@ -2158,7 +2158,7 @@ def SU_codevalues_cs6014():
             )
 
 
-def SU_codevalues_cs6024():
+def SU_codevalues_cs6024(db):
     """ Creating System Use (SU) code values - Codeset 6024: Message Subject """
     subjects = (
             'Call Back',
@@ -2183,7 +2183,7 @@ def SU_codevalues_cs6024():
             )
 
 
-def SU_codevalues_cs6025():
+def SU_codevalues_cs6025(db):
     """ Creating System Use (SU) code values - Codeset 6025: Task Class """
     classes = (
             'Adhoc',
@@ -2205,7 +2205,7 @@ def SU_codevalues_cs6025():
             )
 
 
-def SU_codevalues_cs6026():
+def SU_codevalues_cs6026(db):
     """ Creating System Use (SU) code values - Codeset 6026 Task Type """
     task_types = (
             'Respiratory Care',
@@ -2269,7 +2269,7 @@ def SU_codevalues_cs6026():
             )
 
 
-def SU_codevalues_cs6027():
+def SU_codevalues_cs6027(db):
     """ Creating System Use (SU) code values - Codeset 6027 Task Activity """
     tast_activities = (
         'Abnormal Result',
@@ -2307,7 +2307,7 @@ def SU_codevalues_cs6027():
             )
 
 
-def SU_codevalues_cs6029():
+def SU_codevalues_cs6029(db):
     """ Creating System Use (SU) code values - Codeset 6029: Task Activity Class """
     classes = (
             'Anticipated Document',
@@ -2328,7 +2328,7 @@ def SU_codevalues_cs6029():
             )
 
 
-def SU_codevalues_cs6034():
+def SU_codevalues_cs6034(db):
     """ Creating System Use (SU) code values - Codeset 6034: Task Subtype Code """
     subtypes = (
             'Appointment Request Cancel',
@@ -2368,7 +2368,7 @@ def SU_codevalues_cs6034():
             )
 
 
-def SU_codevalues_cs14024():
+def SU_codevalues_cs14024(db):
     """ Creating System Use (SU) code values - Codeset 14024: Task Status Reason Code """
     reasons = (
             'Task Charted with Form',
@@ -2396,7 +2396,7 @@ def SU_codevalues_cs14024():
             )
 
 
-def SU_codevalues_cs14219():
+def SU_codevalues_cs14219(db):
     """ Codeset 14219: Blood Bank Donor Procedure """
     code_values = (
         'Autologus Donation',
@@ -2419,7 +2419,7 @@ def SU_codevalues_cs14219():
             )
 
 
-def SU_codevalues_cs14281():
+def SU_codevalues_cs14281(db):
     """ Codeset 14281: Department Status """
     code_values = (
         'Canceled',
@@ -2476,7 +2476,7 @@ def SU_codevalues_cs14281():
             )
 
 
-def SU_codevalues_cs14766():
+def SU_codevalues_cs14766(db):
     """ Creating System Use (SU) code values - Codeset 14024: Task Status Reason Code """
     code_values = (
             'Parent',
@@ -2504,7 +2504,7 @@ def SU_codevalues_cs14766():
             )
 
 
-def SU_codevalues_cs14767():
+def SU_codevalues_cs14767(db):
     """ Codeset 14767: Accommodation Reasons """
     code_values = (
             'Security',
@@ -2530,7 +2530,7 @@ def SU_codevalues_cs14767():
             )
 
 
-def SU_codevalues_cs16389():
+def SU_codevalues_cs16389(db):
     """ Codeset 16389: DCP Clinical Category """
     code_values = (
             'Activity',
@@ -2566,7 +2566,7 @@ def SU_codevalues_cs16389():
             )
 
 
-def SU_codevalues_cs17969():
+def SU_codevalues_cs17969(db):
     """ Codeset 17969: Advanced Beneficary Note (ABN) Status Code """
     Statuses = (
         'Not Required',
@@ -2590,7 +2590,7 @@ def SU_codevalues_cs17969():
             )
 
 
-def SU_codevalues_cs18309():
+def SU_codevalues_cs18309(db):
     """ Creating System Use (SU) code values - Codeset 6027 Task Activity """
     tast_activities = (
         'Dialysis',
@@ -2617,7 +2617,7 @@ def SU_codevalues_cs18309():
             )
 
 
-def SU_codevalues_cs22589():
+def SU_codevalues_cs22589(db):
     """ Codeset 22589: Alternate Level of Care """
     code_values = (
         'Home Health',
@@ -2647,7 +2647,7 @@ def SU_codevalues_cs22589():
             )
 
 
-def SU_codevalues_cs255090():
+def SU_codevalues_cs255090(db):
     """ Creating System Use (SU) code values - Codeset 255090 Charting Agent """
     charting_agents = (
         'apache',
@@ -2668,7 +2668,7 @@ def SU_codevalues_cs255090():
             )
 
 
-def SU_codevalues_cs4002164():
+def SU_codevalues_cs4002164(db):
     """ Codeset 4002164: Offset Minute Type Code"""
     code_values = (
         'Acknowledge Results',
@@ -2689,7 +2689,7 @@ def SU_codevalues_cs4002164():
             )
         session.commit()
 
-def SU_codevalues_cs4002509():
+def SU_codevalues_cs4002509(db):
     """ Codeset 4002509: Rounding Rule code """
     code_values = (
         'Automatic rounding',
@@ -2751,11 +2751,13 @@ def SU_codevalues_cs4002509():
 
 def init_code_set_(db):
 
-    #create_SU_codeset_(db)
+    #create_SU_codeset_(db)   # Creating the code sets in code_value_set table
 
-    SU_codevalues_cs2(db)
-    # SU_codevalues_cs3()
-    # SU_codevalues_cs8()
+    # SU_codevalues_cs2(db)
+    # SU_codevalues_cs48(db)
+
+    SU_codevalues_cs3(db)
+    SU_codevalues_cs8(db)
 
     # SU_codevalues_cs10()
     # SU_codevalues_cs16()
@@ -2765,7 +2767,6 @@ def init_code_set_(db):
     # SU_codevalues_cs24()
     # SU_codevalues_cs34()
 
-    # SU_codevalues_cs48(db)
     # SU_codevalues_cs53()
     # SU_codevalues_cs68()
     # SU_codevalues_cs69()

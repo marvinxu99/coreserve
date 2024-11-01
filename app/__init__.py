@@ -10,9 +10,7 @@ from .routes import (
 )
 from .config import Config
 from app.services.db_uar_service import create_global_cv_dicts
-
-from app.db_utils.__generate_code_sets import init_code_set_
-
+from app.commands import init_code_set, db_fix
 
 def create_app(config_class=Config):
     """
@@ -61,11 +59,9 @@ def create_app(config_class=Config):
     with app.app_context():
         create_global_cv_dicts()  # This is now safe within the app context
 
-    @app.cli.command('init-code-set')
-    def init_code_set():
-        with app.app_context():
-            # create_SU_codeset_(db)
-            init_code_set_(db)
-            print("Initialized CS.")
+    # Register the CLI command
+    app.cli.add_command(init_code_set)
+    app.cli.add_command(db_fix)
 
+    
     return app

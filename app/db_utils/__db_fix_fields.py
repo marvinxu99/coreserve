@@ -1,17 +1,15 @@
-from sqlalchemy.orm import Session, aliased
 from sqlalchemy.sql.expression import and_, select, desc, label
 from datetime import datetime
 
-from core.models.db_base import engine
-from core.models.db_code_value import CodeValue
-from core.wwx.data_role import END_EFFECTIVE_DATE_ISO
+from app.models.code_value import CodeValue
+from app.core.constants import END_EFFECTIVE_DATE_ISO
 
 
-def db_update_CV_fields(codeset):
+def db_update_CV_fields(db, codeset):
     """
         Fix the values of the end_effective_dt_tm column of codeset 106
     """
-    with Session(engine) as session:
+    with db.session() as session:
         stmt = select(CodeValue).where(
                 CodeValue.code_set == codeset,
                 CodeValue.active_ind == True 
@@ -24,11 +22,11 @@ def db_update_CV_fields(codeset):
         session.commit()
 
 
-def db_delete_CV_rows(codeset):
+def db_delete_CV_rows(db, codeset):
     """
         Delete certain code_set rows in the code_value table
     """
-    with Session(engine) as session:
+    with db.session() as session:
         kw = {
             'code_set': codeset
         }
@@ -39,12 +37,8 @@ def db_delete_CV_rows(codeset):
 
         session.commit()
 
-
-# Testing stuff
-if __name__ == '__main__':
-   
-    db_update_CV_fields(289)    
-    # db_delete_CV_rows(106)
-    
-    pass
+def db_fix_(db):
+    db_update_CV_fields(db, 289)    
+    # db_delete_CV_rows(106)    
+    # pass
 
