@@ -12,7 +12,6 @@ def register_oauth_routes(app):
     def login():
         # Create the redirect URI for the authorization callback
         redirect_uri = url_for('auth.authorize', _external=True)
-        print(redirect_uri)
         return google.authorize_redirect(redirect_uri)
 
     @auth_bp.route('/authorize')

@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from flask import Flask, session
+
 from .extensions import db, migrate
 from .routes import (
     api_bp, 
@@ -8,6 +9,9 @@ from .routes import (
     patient_bp 
 )
 from .config import Config
+from app.services.db_uar_service import create_global_cv_dicts
+
+from app.db_utils.__generate_code_sets import init_code_set_
 
 
 def create_app(config_class=Config):
@@ -33,6 +37,11 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
+    # Import models here to make sure they're registered
+    from app.models.code_value_set import CodeSet
+    from app.models.code_value import CodeValue
+    from app.models.user import Users
+    
     # a simple page that says hello
     @app.route('/')
     @app.route('/index')
@@ -47,5 +56,16 @@ def create_app(config_class=Config):
     app.register_blueprint(api_bp, url_prefix='/api')
     register_oauth_routes(app)
     app.register_blueprint(patient_bp)
+
+    # Create dicts for uar_get functions
+    with app.app_context():
+        create_global_cv_dicts()  # This is now safe within the app context
+
+    @app.cli.command('init-code-set')
+    def init_code_set():
+        with app.app_context():
+            # create_SU_codeset_(db)
+            init_code_set_(db)
+            print("Initialized CS.")
 
     return app
