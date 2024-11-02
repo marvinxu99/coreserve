@@ -12,7 +12,7 @@ g_codevalue_display = {}
 
 
 @cache.cached(key_prefix="global_code_values")
-def create_global_cv_dicts():
+def get_global_cv_dicts():
     """Load global dictionaries with code values from CodeValue table."""
     global g_display_codevalue
     global g_displaykey_codevalue
@@ -46,6 +46,8 @@ def create_global_cv_dicts():
 
             g_codevalue_display[code_value] = display
     
+        print("Just refreshed global codevalue dicts.")
+
     # Return something to store in the cache
     return "Cache populated with code values."
 
@@ -53,11 +55,12 @@ def create_global_cv_dicts():
 def uar_update_code_values():
     """Update the global uar code values"""
     cache.delete("global_code_values")
-    create_global_cv_dicts()
+    get_global_cv_dicts()
 
 
 def uar_get_code_by(type, codeset, vstr):
     """ Get the code value by the type ('DISPLAY', 'DISPLAYKEY', 'DESCRIPTION') """
+    get_global_cv_dicts()
     try:
         if type == 'DISPLAY':
             return g_display_codevalue[vstr, codeset]
@@ -75,6 +78,7 @@ def uar_get_code_by(type, codeset, vstr):
 
 def uar_get_code_display(code_value):
     """ Get the code value's display  """
+    get_global_cv_dicts()
     try:
         return g_codevalue_display[code_value]
     except KeyError:

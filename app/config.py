@@ -16,10 +16,12 @@ class Config:
     CACHE_TYPE = 'SimpleCache'  # Default cache type
     CACHE_DEFAULT_TIMEOUT = 900  # Default to 15 mins (for development)
 
+
 class DevConfig(Config):
     DEBUG = True
     CACHE_TYPE = 'SimpleCache'
     CACHE_DEFAULT_TIMEOUT = 900  # 15 mins for development
+
 
 class ProdConfig(Config):
     DEBUG = False
@@ -27,11 +29,13 @@ class ProdConfig(Config):
     CACHE_REDIS_URL = 'redis://localhost:6379/0'
     CACHE_DEFAULT_TIMEOUT = None  # Never expires by default
 
+
 class TestingConfig(Config):
     """Configuration for testing."""
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"  # Use in-memory database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 # Choose the configuration based on an environment variable
 config = {

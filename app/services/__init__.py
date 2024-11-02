@@ -2,7 +2,7 @@ from .db_uar_service import (
     uar_get_code_by, 
     uar_get_code_display, 
     uar_update_code_values,
-    create_global_cv_dicts,
+    get_global_cv_dicts,
 )
 
 from .db_get_or_create import (

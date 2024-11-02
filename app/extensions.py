@@ -13,6 +13,7 @@ cache = Cache()
 def init_oauth(app):
     """
     Initialize OAuth with the given Flask app instance.
+    # Note init_oauth() is called in app.routes.auth.py
     """
     oauth.init_app(app)
 
