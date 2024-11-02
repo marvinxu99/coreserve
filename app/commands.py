@@ -3,8 +3,7 @@
 import click
 from flask import current_app
 from app.extensions import db
-from app.db_utils.__generate_code_sets import init_code_set_
-from app.db_utils.__db_fix_fields import db_fix_
+from app.db_utils import init_code_set_, db_fix_, create_test_users_
 
 
 @click.command("init-code-set")
@@ -31,6 +30,16 @@ def db_fix(verbose):
         print("Command run successfully.")
 
 
+@click.command("create-users")
+def create_test_uers():
+    """ Create test users
+    """
+    with current_app.app_context():
+        create_test_users_(db)
+        print("Command run successfully.")
+
+
 def register_commands(app):
     app.cli.add_command(init_code_set)
     app.cli.add_command(db_fix)
+    app.cli.add_command(create_test_uers)
