@@ -1,18 +1,13 @@
 import os
 from datetime import timedelta
-from flask import Flask, session
-from sqlalchemy import inspect
+from flask import Flask
 from .extensions import db, migrate, cache
-from .routes import (
-    api_bp, 
-    register_oauth_routes, 
-    register_fhir_routes
-)
+from .routes import register_routes
 from app.config import config
-from app.services.db_uar_service import create_global_cv_dicts
-from app.commands import init_code_set, db_fix
+from app.services import create_global_cv_dicts
+from app.commands import register_commands
 
-from app.services.db_uar_service import uar_get_code_by
+from app import models  # This registers all models with SQLAlchemy
 
 
 def create_app(config_name="development"):
@@ -38,31 +33,12 @@ def create_app(config_name="development"):
     db.init_app(app)
     migrate.init_app(app, db)
     cache.init_app(app)
-
-    # Import models here to make sure they're registered
-    from app.models.code_value_set import CodeSet
-    from app.models.code_value import CodeValue
-    from app.models.user import Users
-
-    # a simple page that says hello
-    @app.route('/')
-    @app.route('/index')
-    def index():
-        # If logged in, show the user's email and id
-        session_d = dict(session)
-        email = session_d.get('email', None)
-        id = session_d.get('id', None)
-        code = uar_get_code_by("DISPLAY", 48, "Active")
-        return f'Hello, email={email}, id={id}, code={code}!'
-    
+   
     # Register Blueprints
-    app.register_blueprint(api_bp, url_prefix='/api')
-    register_oauth_routes(app)
-    register_fhir_routes(app)
+    register_routes(app)
 
     # Register the CLI command
-    app.cli.add_command(init_code_set)
-    app.cli.add_command(db_fix)
+    register_commands(app)
     
     # Create dicts for uar_get functions
     with app.app_context():

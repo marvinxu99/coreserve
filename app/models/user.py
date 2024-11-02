@@ -6,8 +6,8 @@ from app import db
 from app.core.constants import END_EFFECTIVE_DATE_ISO
 
 
-class Users(db.Model):
-    __tablename__ = 'users'
+class User(db.Model):
+    __tablename__ = 'user'
 
     user_id                 = Column(BigInteger, primary_key=True, autoincrement=True)
     username                = Column(String(50), index=True, unique=True)

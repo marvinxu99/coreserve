@@ -30,3 +30,7 @@ def db_fix(verbose):
             print("Verbose mode enabled: Initializing code set...")
         print("Command run successfully.")
 
+
+def register_commands(app):
+    app.cli.add_command(init_code_set)
+    app.cli.add_command(db_fix)
