@@ -4,7 +4,6 @@ import bcrypt
 
 from app import db
 from app.core.constants import END_EFFECTIVE_DATE_ISO
-from app.services.db_uar_service import uar_get_code_by
 
 
 class Users(db.Model):
@@ -24,7 +23,7 @@ class Users(db.Model):
     name_middle             = Column(String(200), nullable=True)
     name_middle_key         = Column(String(100), nullable=True, index=True)
     
-    active_status_cd        = Column(BigInteger, default=uar_get_code_by('DISPLAYKEY', 48, 'ACTIVE'))       # Codeset 48: Active 
+    active_status_cd        = Column(BigInteger, nullable=True)      # Codeset 48: Active 
     active_status_dt_tm     = Column(DateTime, default=datetime.now)
     active_status_prsnl_id  = Column(BigInteger, default=0)
     beg_effective_dt_tm     = Column(DateTime, default=datetime.now)

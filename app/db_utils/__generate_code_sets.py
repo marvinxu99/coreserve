@@ -6,6 +6,7 @@ from random import randint
 from app.models.code_value_set import CodeSet
 from app.models.code_value import CodeValue
 from app.services.db_get_or_create import db_get_or_add_instance, db_get_or_create
+from .generate_units_of_measure import SU_codevalues_cs54
 
 from app.core.constants import END_EFFECTIVE_DATE_ISO
 
@@ -2755,9 +2756,10 @@ def init_code_set_(db):
 
     # SU_codevalues_cs2(db)
     # SU_codevalues_cs48(db)
+    # SU_codevalues_cs3(db)
+    # SU_codevalues_cs8(db)
 
-    SU_codevalues_cs3(db)
-    SU_codevalues_cs8(db)
+    SU_codevalues_cs54(db)
 
     # SU_codevalues_cs10()
     # SU_codevalues_cs16()

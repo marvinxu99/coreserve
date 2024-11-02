@@ -1,7 +1,7 @@
 """ Database manipulation using SQLAlchemy ORM
 """
-from sqlalchemy import Column, select
-from sqlalchemy import Integer, BigInteger, String, Sequence, DateTime, Boolean 
+from sqlalchemy import Column
+from sqlalchemy import Integer, BigInteger, String, DateTime, Boolean 
 from sqlalchemy import ForeignKey
 from datetime import datetime
 
@@ -15,9 +15,12 @@ class CodeValue(db.Model):
     code_value              = Column(BigInteger, primary_key=True, autoincrement=True)
 
     active_ind              = Column(Boolean, default=True)
-    active_type_cd          = Column(BigInteger, nullable=True)
+    active_type_cd          = Column(BigInteger, nullable=True)   # Code set 48
     active_status_prsnl_id  = Column(BigInteger, nullable=True)
+    
     begin_effective_dt_tm   = Column(DateTime, default=datetime.now)
+    end_effective_dt_tm     = Column(DateTime, default=datetime.fromisoformat(END_EFFECTIVE_DATE_ISO))
+
     meaning                 = Column(String(12), nullable=True)
     cki                     = Column(String(255), nullable=True)
     code_set                = Column(Integer, ForeignKey('code_set.code_set') )
@@ -30,7 +33,6 @@ class CodeValue(db.Model):
     description             = Column(String(60))
     display                 = Column(String(40), index=True)
     display_key             = Column(String(40), index=True)
-    end_effective_dt_tm     = Column(DateTime, default=datetime.fromisoformat(END_EFFECTIVE_DATE_ISO))
     inactive_dt_tm          = Column(DateTime, nullable=True)
     inst_id                 = Column(BigInteger, default=0)
     txn_id_text             = Column(String(200), nullable=True)
@@ -45,3 +47,4 @@ class CodeValue(db.Model):
 
     def __repr__(self):
         return f"<CodeValue(code_value={self.code_value}, display={self.display}, description={self.description}>"
+

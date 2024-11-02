@@ -38,7 +38,10 @@ def db_delete_CV_rows(db, codeset):
         session.commit()
 
 def db_fix_(db):
-    db_update_CV_fields(db, 289)    
-    # db_delete_CV_rows(106)    
-    # pass
+    
+    # db_update_CV_fields(db, 54)    
+    
+    # db_delete_CV_rows(db, 54)    
+    
+    pass
 

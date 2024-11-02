@@ -70,7 +70,6 @@ def uar_get_code_display(code_value):
     except:
         return None
 
-
 #test
 if __name__ == '__main__':
     print(uar_get_code_by('MEANING', 79, 'PENDING'))
