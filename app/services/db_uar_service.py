@@ -1,15 +1,18 @@
+from app.extensions import db, cache
 from sqlalchemy import select
-
 from app.models.code_value import CodeValue
-from app import db
 
+# Global dictionaries to hold code values
 g_display_codevalue = {}
 g_displaykey_codevalue = {}
 g_description_codevalue = {}
 g_meaning_codevalue = {}
 g_codevalue_display = {}
 
+
+@cache.cached(key_prefix="global_code_values")
 def create_global_cv_dicts():
+    """Load global dictionaries with code values from CodeValue table."""
     global g_display_codevalue
     global g_displaykey_codevalue
     global g_description_codevalue
@@ -43,34 +46,30 @@ def create_global_cv_dicts():
 
 def uar_update_code_values():
     """Update the global uar code values"""
-    create_global_cv_dicts()     
+    cache.delete("global_code_values")
+    create_global_cv_dicts()
 
 
 def uar_get_code_by(type, codeset, vstr):
     """ Get the code value by the type ('DISPLAY', 'DISPLAYKEY', 'DESCRIPTION') """
     try:
         if type == 'DISPLAY':
-            return(g_display_codevalue[vstr, codeset])
+            return g_display_codevalue[vstr, codeset]
         elif type == 'DISPLAYKEY':
-            return(g_displaykey_codevalue[vstr, codeset])    
+            return g_displaykey_codevalue[vstr, codeset] 
         elif type == 'DESCRIPTION':
-            return(g_description_codevalue[vstr, codeset])    
+            return g_description_codevalue[vstr, codeset]
         elif type == 'MEANING':
-            return(g_meaning_codevalue[vstr, codeset])    
+            return g_meaning_codevalue[vstr, codeset]  
         else:
             return None
-    except:
+    except KeyError:
         return None
 
 
 def uar_get_code_display(code_value):
     """ Get the code value's display  """
     try:
-        return(g_codevalue_display[code_value])    
-    except:
+        return g_codevalue_display[code_value]
+    except KeyError:
         return None
-
-#test
-if __name__ == '__main__':
-    print(uar_get_code_by('MEANING', 79, 'PENDING'))
-    print(uar_get_code_by('MEANING', 79, 'OVERDUE'))

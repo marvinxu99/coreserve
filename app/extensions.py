@@ -2,10 +2,13 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from authlib.integrations.flask_client import OAuth
+from flask_caching import Cache
 
 db = SQLAlchemy()
 migrate = Migrate()
 oauth = OAuth()
+cache = Cache()
+
 
 def init_oauth(app):
     """

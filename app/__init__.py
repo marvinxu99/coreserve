@@ -1,18 +1,18 @@
 import os
 from datetime import timedelta
 from flask import Flask, session
-
-from .extensions import db, migrate
+from .extensions import db, migrate, cache
 from .routes import (
     api_bp, 
     register_oauth_routes, 
     patient_bp 
 )
-from .config import Config
+from .config import DevConfig, ProdConfig
 from app.services.db_uar_service import create_global_cv_dicts
 from app.commands import init_code_set, db_fix
 
-def create_app(config_class=Config):
+
+def create_app(config_class=DevConfig):
     """
     Factory function to create and configure the Flask application.
     """
@@ -34,6 +34,7 @@ def create_app(config_class=Config):
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    cache.init_app(app)
 
     # Import models here to make sure they're registered
     from app.models.code_value_set import CodeSet
