@@ -11,9 +11,3 @@ with app.app_context():
     inspector = inspect(engine)
     tables = inspector.get_table_names()
     print("Tables in the coreserve1 database:", tables)
-
-    # print(db.get_engine().url)
-    # engine = db.get_engine()
-    # inspector = inspect(engine)
-    # tables = inspector.get_table_names()
-    # print("Tables in the coreserve1 database: ", tables)

@@ -1,14 +1,10 @@
 import re
-from sqlalchemy.orm import Session
 
-from core.models.db_base import engine
-from core.models.db_code_value_set import CodeSet
-from core.models.db_code_value import CodeValue
-from core.dbutils.db_get_or_create import db_get_or_create
-from core.dbutils.db_utils import convert_to_key
+from app.models.code_value import CodeValue
+from app.services.db_get_or_create import db_get_or_create
 
 
-def SU_codevalues_cs4003():
+def SU_codevalues_cs4003(db):
     """ Codeset 4003: Frequency """
 
     # format: (display, description)
@@ -206,7 +202,7 @@ def SU_codevalues_cs4003():
         ('IQHEALTH.MEDICATIONS', 'IQHEALTH.MEDICATIONS'),
         ('hemodialysis 2 times/week', 'give in hemodialysis 2 times every 1 week'),
     )
-    with Session(engine) as session:
+    with db.session() as session:
         for display, description in code_values:
             db_get_or_create(
                 session,
