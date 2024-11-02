@@ -1,8 +1,8 @@
-"""added codeset and codevalue
+"""initial
 
-Revision ID: ec1d97cda95b
-Revises: bf81e958a1e4
-Create Date: 2024-10-31 22:49:51.162198
+Revision ID: ea1ec6e7d994
+Revises: 
+Create Date: 2024-11-01 23:24:12.683450
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ec1d97cda95b'
-down_revision = 'bf81e958a1e4'
+revision = 'ea1ec6e7d994'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -57,12 +57,47 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_code_set_display'), ['display'], unique=False)
         batch_op.create_index(batch_op.f('ix_code_set_display_key'), ['display_key'], unique=False)
 
+    op.create_table('users',
+    sa.Column('user_id', sa.BigInteger(), autoincrement=True, nullable=False),
+    sa.Column('username', sa.String(length=50), nullable=True),
+    sa.Column('email', sa.String(length=255), nullable=True),
+    sa.Column('password', sa.String(length=128), nullable=False),
+    sa.Column('password_expiry_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('name_first', sa.String(length=200), nullable=True),
+    sa.Column('name_first_key', sa.String(length=100), nullable=True),
+    sa.Column('name_full_formatted', sa.String(length=100), nullable=True),
+    sa.Column('name_last', sa.String(length=200), nullable=True),
+    sa.Column('name_last_key', sa.String(length=100), nullable=True),
+    sa.Column('name_middle', sa.String(length=200), nullable=True),
+    sa.Column('name_middle_key', sa.String(length=100), nullable=True),
+    sa.Column('active_status_cd', sa.BigInteger(), nullable=True),
+    sa.Column('active_status_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('active_status_prsnl_id', sa.BigInteger(), nullable=True),
+    sa.Column('beg_effective_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('end_effective_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('create_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('create_prsnl_id', sa.BigInteger(), nullable=True),
+    sa.Column('updt_applctx', sa.BigInteger(), nullable=True),
+    sa.Column('updt_cnt', sa.Integer(), nullable=True),
+    sa.Column('updt_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('updt_id', sa.BigInteger(), nullable=True),
+    sa.Column('updt_task', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('user_id')
+    )
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_users_email'), ['email'], unique=True)
+        batch_op.create_index(batch_op.f('ix_users_name_first_key'), ['name_first_key'], unique=False)
+        batch_op.create_index(batch_op.f('ix_users_name_middle_key'), ['name_middle_key'], unique=False)
+        batch_op.create_index(batch_op.f('ix_users_password'), ['password'], unique=False)
+        batch_op.create_index(batch_op.f('ix_users_username'), ['username'], unique=True)
+
     op.create_table('code_value',
-    sa.Column('code_value', sa.BigInteger(), nullable=False),
+    sa.Column('code_value', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('active_ind', sa.Boolean(), nullable=True),
     sa.Column('active_type_cd', sa.BigInteger(), nullable=True),
     sa.Column('active_status_prsnl_id', sa.BigInteger(), nullable=True),
     sa.Column('begin_effective_dt_tm', sa.DateTime(), nullable=True),
+    sa.Column('end_effective_dt_tm', sa.DateTime(), nullable=True),
     sa.Column('meaning', sa.String(length=12), nullable=True),
     sa.Column('cki', sa.String(length=255), nullable=True),
     sa.Column('code_set', sa.Integer(), nullable=True),
@@ -75,7 +110,6 @@ def upgrade():
     sa.Column('description', sa.String(length=60), nullable=True),
     sa.Column('display', sa.String(length=40), nullable=True),
     sa.Column('display_key', sa.String(length=40), nullable=True),
-    sa.Column('end_effective_dt_tm', sa.DateTime(), nullable=True),
     sa.Column('inactive_dt_tm', sa.DateTime(), nullable=True),
     sa.Column('inst_id', sa.BigInteger(), nullable=True),
     sa.Column('txn_id_text', sa.String(length=200), nullable=True),
@@ -91,94 +125,24 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_code_value_display'), ['display'], unique=False)
         batch_op.create_index(batch_op.f('ix_code_value_display_key'), ['display_key'], unique=False)
 
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('user_id', sa.BigInteger(), autoincrement=True, nullable=False))
-        batch_op.add_column(sa.Column('password', sa.String(length=128), nullable=False))
-        batch_op.add_column(sa.Column('password_expiry_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('name_first', sa.String(length=200), nullable=True))
-        batch_op.add_column(sa.Column('name_first_key', sa.String(length=100), nullable=True))
-        batch_op.add_column(sa.Column('name_full_formatted', sa.String(length=100), nullable=True))
-        batch_op.add_column(sa.Column('name_last', sa.String(length=200), nullable=True))
-        batch_op.add_column(sa.Column('name_last_key', sa.String(length=100), nullable=True))
-        batch_op.add_column(sa.Column('name_middle', sa.String(length=200), nullable=True))
-        batch_op.add_column(sa.Column('name_middle_key', sa.String(length=100), nullable=True))
-        batch_op.add_column(sa.Column('active_status_cd', sa.BigInteger(), nullable=True))
-        batch_op.add_column(sa.Column('active_status_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('active_status_prsnl_id', sa.BigInteger(), nullable=True))
-        batch_op.add_column(sa.Column('beg_effective_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('end_effective_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('create_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('create_prsnl_id', sa.BigInteger(), nullable=True))
-        batch_op.add_column(sa.Column('updt_applctx', sa.BigInteger(), nullable=True))
-        batch_op.add_column(sa.Column('updt_cnt', sa.Integer(), nullable=True))
-        batch_op.add_column(sa.Column('updt_dt_tm', sa.DateTime(), nullable=True))
-        batch_op.add_column(sa.Column('updt_id', sa.BigInteger(), nullable=True))
-        batch_op.add_column(sa.Column('updt_task', sa.Integer(), nullable=True))
-        batch_op.alter_column('username',
-               existing_type=sa.VARCHAR(length=50),
-               nullable=True)
-        batch_op.alter_column('email',
-               existing_type=sa.VARCHAR(length=120),
-               type_=sa.String(length=255),
-               nullable=True)
-        batch_op.drop_constraint('users_email_key', type_='unique')
-        batch_op.drop_constraint('users_username_key', type_='unique')
-        batch_op.create_index(batch_op.f('ix_users_email'), ['email'], unique=True)
-        batch_op.create_index(batch_op.f('ix_users_name_first_key'), ['name_first_key'], unique=False)
-        batch_op.create_index(batch_op.f('ix_users_name_middle_key'), ['name_middle_key'], unique=False)
-        batch_op.create_index(batch_op.f('ix_users_password'), ['password'], unique=False)
-        batch_op.create_index(batch_op.f('ix_users_username'), ['username'], unique=True)
-        batch_op.drop_column('id')
-
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('id', sa.INTEGER(), autoincrement=True, nullable=False))
-        batch_op.drop_index(batch_op.f('ix_users_username'))
-        batch_op.drop_index(batch_op.f('ix_users_password'))
-        batch_op.drop_index(batch_op.f('ix_users_name_middle_key'))
-        batch_op.drop_index(batch_op.f('ix_users_name_first_key'))
-        batch_op.drop_index(batch_op.f('ix_users_email'))
-        batch_op.create_unique_constraint('users_username_key', ['username'])
-        batch_op.create_unique_constraint('users_email_key', ['email'])
-        batch_op.alter_column('email',
-               existing_type=sa.String(length=255),
-               type_=sa.VARCHAR(length=120),
-               nullable=False)
-        batch_op.alter_column('username',
-               existing_type=sa.VARCHAR(length=50),
-               nullable=False)
-        batch_op.drop_column('updt_task')
-        batch_op.drop_column('updt_id')
-        batch_op.drop_column('updt_dt_tm')
-        batch_op.drop_column('updt_cnt')
-        batch_op.drop_column('updt_applctx')
-        batch_op.drop_column('create_prsnl_id')
-        batch_op.drop_column('create_dt_tm')
-        batch_op.drop_column('end_effective_dt_tm')
-        batch_op.drop_column('beg_effective_dt_tm')
-        batch_op.drop_column('active_status_prsnl_id')
-        batch_op.drop_column('active_status_dt_tm')
-        batch_op.drop_column('active_status_cd')
-        batch_op.drop_column('name_middle_key')
-        batch_op.drop_column('name_middle')
-        batch_op.drop_column('name_last_key')
-        batch_op.drop_column('name_last')
-        batch_op.drop_column('name_full_formatted')
-        batch_op.drop_column('name_first_key')
-        batch_op.drop_column('name_first')
-        batch_op.drop_column('password_expiry_dt_tm')
-        batch_op.drop_column('password')
-        batch_op.drop_column('user_id')
-
     with op.batch_alter_table('code_value', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_code_value_display_key'))
         batch_op.drop_index(batch_op.f('ix_code_value_display'))
 
     op.drop_table('code_value')
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_users_username'))
+        batch_op.drop_index(batch_op.f('ix_users_password'))
+        batch_op.drop_index(batch_op.f('ix_users_name_middle_key'))
+        batch_op.drop_index(batch_op.f('ix_users_name_first_key'))
+        batch_op.drop_index(batch_op.f('ix_users_email'))
+
+    op.drop_table('users')
     with op.batch_alter_table('code_set', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_code_set_display_key'))
         batch_op.drop_index(batch_op.f('ix_code_set_display'))

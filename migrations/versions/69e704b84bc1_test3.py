@@ -1,8 +1,8 @@
-"""Create code_value table with sequence
+"""test3
 
-Revision ID: eba2a3e53a0c
-Revises: ec1d97cda95b
-Create Date: 2024-10-31 23:34:25.667414
+Revision ID: 69e704b84bc1
+Revises: ea1ec6e7d994
+Create Date: 2024-11-02 00:00:38.255342
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'eba2a3e53a0c'
-down_revision = 'ec1d97cda95b'
+revision = '69e704b84bc1'
+down_revision = 'ea1ec6e7d994'
 branch_labels = None
 depends_on = None
 

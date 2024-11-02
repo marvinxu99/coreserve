@@ -1,6 +1,7 @@
-from app.extensions import db, cache
+# from app.extensions import db, cache
 from sqlalchemy import select
 from app.models.code_value import CodeValue
+from app.models.code_value_set import CodeSet
 
 # Global dictionaries to hold code values
 g_display_codevalue = {}
@@ -10,8 +11,8 @@ g_meaning_codevalue = {}
 g_codevalue_display = {}
 
 
-@cache.cached(key_prefix="global_code_values")
-def create_global_cv_dicts():
+# @cache.cached(key_prefix="global_code_values")
+def create_global_cv_dicts(db):
     """Load global dictionaries with code values from CodeValue table."""
     global g_display_codevalue
     global g_displaykey_codevalue
@@ -20,18 +21,33 @@ def create_global_cv_dicts():
     global g_codevalue_display
 
     with db.session() as session:
-        stmt = select(
-            CodeValue.display, 
-            CodeValue.display_key, 
-            CodeValue.description, 
-            CodeValue.meaning,
-            CodeValue.code_set, 
-            CodeValue.code_value
-        ).where(
-            CodeValue.active_ind==True
-        ).order_by(CodeValue.display)
+        # stmt = select(
+        #     CodeValue.display, 
+        #     CodeValue.display_key, 
+        #     CodeValue.description, 
+        #     CodeValue.meaning,
+        #     CodeValue.code_set, 
+        #     CodeValue.code_value
+        # ).where(
+        #     CodeValue.active_ind==True
+        # ).order_by(CodeValue.display)
         
-        results = session.execute(stmt).all()
+        # results = session.execute(stmt).all()
+
+        # Querying the CodeValue table with db.session.query()
+        results = (
+            db.session.query(
+                CodeValue.display,
+                CodeValue.display_key,
+                CodeValue.description,
+                CodeValue.meaning,
+                CodeValue.code_set,
+                CodeValue.code_value
+            )
+            .filter(CodeValue.active_ind == True)
+            .order_by(CodeValue.display)
+            .all()
+        )
 
         for display, display_key, description, meaning, codeset, code_value in results:
             g_display_codevalue[display, codeset] = code_value
