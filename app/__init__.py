@@ -5,6 +5,7 @@ from app.extensions import db, migrate, cache
 from app.routes import register_routes
 from app.commands import register_commands
 from app.config import config
+from app.utils import LoggingManager
 
 from app import models      # This registers all models with SQLAlchemy
 
@@ -27,6 +28,10 @@ def create_app(config_name="development"):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # Initialize LoggingManager
+    logging_manager = LoggingManager()
+    app.logger = logging_manager.get_logger('coreserve')  # Set the app's logger
 
     # Initialize extensions
     db.init_app(app)

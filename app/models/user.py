@@ -11,15 +11,15 @@ class User(db.Model):
 
     user_id                 = Column(BigInteger, primary_key=True, autoincrement=True)
     username                = Column(String(50), index=True, unique=True)
-    email                   = Column(String(255), index=True, nullable=True, unique=True)
+    email                   = Column(String(255), index=True, nullable=True)
     password                = Column(String(128), index=True, nullable=False)
     password_expiry_dt_tm   = Column(DateTime, default=datetime.fromisoformat(END_EFFECTIVE_DATE_ISO) )   
 
-    name_first              = Column(String(200))
-    name_first_key          = Column(String(100), index=True)
-    name_full_formatted     = Column(String(100))
-    name_last               = Column(String(200))
-    name_last_key           = Column(String(100))
+    name_first              = Column(String(200), nullable=True)
+    name_first_key          = Column(String(100), index=True, nullable=True)
+    name_full_formatted     = Column(String(100), nullable=True)
+    name_last               = Column(String(200), nullable=True)
+    name_last_key           = Column(String(100), index=True, nullable=True)
     name_middle             = Column(String(200), nullable=True)
     name_middle_key         = Column(String(100), nullable=True, index=True)
     

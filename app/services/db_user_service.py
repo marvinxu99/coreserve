@@ -1,72 +1,133 @@
 # coreserve/app/services/db_user_service.py
-
-from app.models.user import User
-from app import db
+import re
+from datetime import datetime
 import bcrypt
 
-class UserService:
-    @staticmethod
-    def create_user(username, email):
-        user = User(username=username, email=email)
-        db.session.add(user)
+from app.extensions import db
+from app.models import User
+from app.utils import LoggingManager
+
+
+logging_manager = LoggingManager()
+logger = logging_manager.get_logger(__name__)
+
+
+def is_hashed_password(password):
+    # Bcrypt hash pattern typically starts with $2b$, $2a$, or $2y$ and is 60 chars long
+    return bool(re.match(r"^\$2[aby]\$\d{2}\$.{53}$", password))
+
+
+# CREATE: Add a new user with hashed password
+def create_user(username, email, password, name_first, name_last, name_middle=None):
+    try:
+        hashed_password = password if is_hashed_password(password) else bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        new_user = User(
+            username=username,
+            email=email,
+            password=hashed_password.decode('utf-8'),
+            name_first=name_first,
+            name_last=name_last,
+            name_middle=name_middle,
+            create_dt_tm=datetime.now()
+        )
+        new_user.name_first_key         = re.sub('[^0-9a-zA-Z]+', '', new_user.name_first).upper()
+        new_user.name_last_key          = re.sub('[^0-9a-zA-Z]+', '', new_user.name_last).upper()
+        new_user.name_full_formatted    = new_user.name_first + " " + new_user.name_last
+
+        db.session.add(new_user)
         db.session.commit()
-        return user
+    
+        return new_user
+    
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error creating user: {e}")
+        return None
 
-    @staticmethod
-    def db_create_user(username, email, password):
-        """Create a user with username, email, hashed password"""
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-        user = User(username=username, email=email, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        return user
-
-    @staticmethod
-    def get_user_by_id(user_id):
+# READ: Retrieve a user by ID
+def get_user_by_id(user_id):
+    try:
         return User.query.get(user_id)
+    except Exception as e:
+        logger.error(f"Error retrieving user with ID {user_id}: {e}")
+        return None
 
-    @staticmethod
-    def get_user_by_username(username):
-        """Query user by userame"""
-        return User.query.get(username=username)
+# READ: Retrieve a user by username
+def get_user_by_username(username):
+    try:
+        return User.query.filter_by(username=username).first()
+    except Exception as e:
+        logger.error(f"Error retrieving user with username {username}: {e}")
+        return None
 
-    @staticmethod
-    def verify_password(username, password):
-        """Verify the user's passowrd"""
-        user = UserService.get_user_by_username(username)
-        if user is not None:
-            return bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8'))
-        else:
+# READ: Retrieve all users
+def get_all_users():
+    try:
+        return User.query.all()
+    except Exception as e:
+        logger.error(f"Error retrieving all users: {e}")
+        return []
+
+# UPDATE: Update an existing user's details
+def update_user(user_id, username=None, email=None, password=None, name_first=None, name_last=None, name_middle=None):
+    try:
+        user = User.query.get(user_id)
+        if user is None:
+            print(f"User with ID {user_id} not found.")
+            return None
+        if username:
+            user.username = username
+        if email:
+            user.email = email
+        if password:
+            user.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        if name_first:
+            user.name_first = name_first
+        if name_last:
+            user.name_last = name_last
+        if name_middle:
+            user.name_middle = name_middle
+        user.updt_dt_tm = datetime.now()
+        db.session.commit()
+        return user
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error updating user with ID {user_id}: {e}")
+        return None
+
+# DELETE: Delete a user by ID
+def delete_user(user_id):
+    try:
+        user = User.query.get(user_id)
+        if user is None:
+            print(f"User with ID {user_id} not found.")
             return False
+        db.session.delete(user)
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error deleting user with ID {user_id}: {e}")
+        return False
 
 
-###############################################################################
-# Testing
-##########################
-if __name__ == "__main__":
+def verify_password(username, password):
+    """Verify the user's password, handling both plain text and hashed incoming passwords."""
+    user = get_user_by_username(username)
+    
+    if user is None:
+        return None
 
-    # Create the users table
-    # Base.metadata.create_all(engine)
+    # If the incoming password is already hashed, compare it directly
+    if is_hashed_password(password):
+        if password == user.password:
+            return user
+        else:
+            return None
 
-    # Create test users
-    # # 1. create a test user
-    username = 'wesley1'
-    email = "test@gmail.com"
-    password = '1234'
-    UserService.create_user(username, email, password)
-
-    # # # 2. create a test user
-    # username = 'winter1'
-    # email = "test2@gmail.com"
-    # password = '1234'
-    # db_create_user(username, email, password)
-
-    # result = query_user_by_username('winter1')
-    # if result is not None:
-    #     print(result.user_id, result.password)
-    # else:
-    #     print("None")     
-
-    result = UserService.verify_password('winter1', '12345')
-    print(result)
+    else:
+        # Otherwise, hash the incoming plain text password and compare
+        if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            return user
+        else:
+            return None

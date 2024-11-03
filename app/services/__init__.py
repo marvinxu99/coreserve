@@ -15,4 +15,12 @@ from .code_value_service import (
     invalidate_code_values_cache
 )
 
-from .db_user_service import UserService
+from .db_user_service import (
+    create_user,
+    get_all_users,
+    get_user_by_id,
+    get_user_by_username,
+    update_user,
+    delete_user,
+    verify_password
+)

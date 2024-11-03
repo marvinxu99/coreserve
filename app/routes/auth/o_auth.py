@@ -2,16 +2,16 @@ from flask import Blueprint, session, redirect, url_for, jsonify
 from app.extensions import init_oauth
 
 # Create an authentication blueprint
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('oauth1', __name__)
 
-def register_oauth_routes(app):
+def register_o_auth_routes(app):
     # Initialize OAuth with the app context
     google = init_oauth(app)
 
     @auth_bp.route('/login')
     def login():
         # Create the redirect URI for the authorization callback
-        redirect_uri = url_for('auth.authorize', _external=True)
+        redirect_uri = url_for('oauth1.authorize', _external=True)
         return google.authorize_redirect(redirect_uri)
 
     @auth_bp.route('/authorize')
