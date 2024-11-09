@@ -1,4 +1,4 @@
-from flask import Blueprint, session
+from flask import Blueprint, session, render_template
 from app.services import uar_get_code_by
 
 # Define the blueprint
@@ -15,3 +15,9 @@ def index():
     id = session_d.get('id', None)
     code = uar_get_code_by("DISPLAY", 48, "Active")
     return f'Hello, email={email}, id={id}, code={code}!'
+
+
+@basic_bp.route('/react')
+def test_react():
+    return render_template('test_react/index.html')
+
