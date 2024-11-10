@@ -1,5 +1,8 @@
-from flask import Blueprint, session, redirect, url_for, jsonify
+from flask import Blueprint, session, redirect, url_for, jsonify, g
 from app.extensions import init_oauth
+from flask_login import login_user, current_user, logout_user
+from app.services import get_user_by_email, create_user
+
 
 # Create an authentication blueprint
 auth_bp = Blueprint('oauth1', __name__)
@@ -29,16 +32,34 @@ def register_o_auth_routes(app):
         user_info = resp.json()
 
         # Store user email and id in session
-        session['email'] = user_info['email']
-        session['id'] = user_info['id']
-        session.permanent = True  # Make the session permanent
+        # session['email'] = user_info['email']
+        # session['id'] = user_info['id']
+        # session.permanent = True  # Make the session permanent
+
+        # save user to database if not saved already.
+        user = get_user_by_email(user_info['email'])
+        if not user:
+            # Save user to database here
+            user = create_user(
+                email=user_info['email'],
+                password='randonpassword'
+            )
+
+        login_user(user)
+        g.user = current_user
+
         return redirect('/index')
+
 
     @auth_bp.route('/logout')
     def logout():
         # Clear user session data
         session.pop('email', None)
         session.pop('id', None)
+
+        logout_user()
+        g.user = None
+
         return redirect('/')
 
     # Register the blueprint

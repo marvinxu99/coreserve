@@ -52,7 +52,15 @@ class User(db.Model):
             return User.query.get(id)
         except Exception as e:
             return None
-        
+    
+    @classmethod
+    def get(cls, user_id):
+        user_data = cls.users.get(user_id)
+        if user_data:
+            user = User(id=user_data["id"])
+            return user
+        return None
+    
     # def __init__(self, id, password=None):
     #     self.id = id
     #     self.password = password
