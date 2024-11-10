@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, current_app
-from flask_login import login_user, logout_user, login_required
+from flask import Blueprint, render_template, redirect, url_for, flash, current_app, g
+from flask_login import login_user, logout_user, login_required, current_user
 from app.forms import RegistrationForm, LoginForm
 from app.utils import send_confirmation_email, confirm_token
 from app.services import create_user, verify_password, get_user_by_email, update_user
@@ -60,6 +60,7 @@ def login():
         user = verify_password(form.email.data, form.password.data)
         if user:
             login_user(user)
+            g.user = create_user
             return redirect(url_for("home.index"))
         
         flash("Invalid email or password.")
@@ -68,7 +69,7 @@ def login():
 
 
 @auth_bp.route("/logout")
-@login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    g.user = None
+    return redirect(url_for("home.index"))

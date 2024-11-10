@@ -48,8 +48,11 @@ class User(db.Model):
         return self.user_id
 
     def get(self, id):
-        return self.user_id
-
+        try:
+            return User.query.get(id)
+        except Exception as e:
+            return None
+        
     # def __init__(self, id, password=None):
     #     self.id = id
     #     self.password = password

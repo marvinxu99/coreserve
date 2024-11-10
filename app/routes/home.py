@@ -1,6 +1,5 @@
-from flask import Blueprint, session, render_template
+from flask import Blueprint, session, render_template, g
 from app.services import uar_get_code_by
-from flask_login import current_user
 
 # Define the blueprint
 home_bp = Blueprint('home', __name__)
@@ -16,6 +15,14 @@ def index():
     # code = uar_get_code_by("DISPLAY", 48, "Active")    
     # return f'Hello, email={email}, id={id}, code={code}!'
     return render_template('index.html')
+
+
+@home_bp.route('/profile')
+def profile():
+    if g.user.is_authenticated:
+        return f"Welcome, {g.user.username}!"
+    else:
+        return "Please log in to view your profile."
 
 
 @home_bp.route('/react')
