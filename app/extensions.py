@@ -3,11 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from authlib.integrations.flask_client import OAuth
 from flask_caching import Cache
+from flask_mail import Mail
+from flask_login import LoginManager
+from itsdangerous import URLSafeTimedSerializer
+
 
 db = SQLAlchemy()
 migrate = Migrate()
 oauth = OAuth()
 cache = Cache()
+
+mail = Mail()
+login_manager = LoginManager()
+login_manager.login_view = "auth.login"  # Set the default login view
+serializer = URLSafeTimedSerializer("supersecretkey")  # Generate tokens for email confirmation
 
 
 def init_oauth(app):

@@ -18,21 +18,14 @@ def is_hashed_password(password):
 
 
 # CREATE: Add a new user with hashed password
-def create_user(username, email, password, name_first, name_last, name_middle=None):
+def create_user(email, password):
     try:
         hashed_password = password if is_hashed_password(password) else bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         new_user = User(
-            username=username,
             email=email,
             password=hashed_password.decode('utf-8'),
-            name_first=name_first,
-            name_last=name_last,
-            name_middle=name_middle,
             create_dt_tm=datetime.now()
         )
-        new_user.name_first_key         = re.sub('[^0-9a-zA-Z]+', '', new_user.name_first).upper()
-        new_user.name_last_key          = re.sub('[^0-9a-zA-Z]+', '', new_user.name_last).upper()
-        new_user.name_full_formatted    = new_user.name_first + " " + new_user.name_last
 
         db.session.add(new_user)
         db.session.commit()
@@ -58,6 +51,14 @@ def get_user_by_username(username):
         return User.query.filter_by(username=username).first()
     except Exception as e:
         logger.error(f"Error retrieving user with username {username}: {e}")
+        return None
+
+# READ: Retrieve a user by username
+def get_user_by_email(email):
+    try:
+        return User.query.filter_by(email=email).first()
+    except Exception as e:
+        logger.error(f"Error retrieving user with email {email}: {e}")
         return None
 
 # READ: Retrieve all users
@@ -110,10 +111,11 @@ def delete_user(user_id):
         logger.error(f"Error deleting user with ID {user_id}: {e}")
         return False
 
-
-def verify_password(username, password):
+def verify_password(email, password):
     """Verify the user's password, handling both plain text and hashed incoming passwords."""
-    user = get_user_by_username(username)
+    user = get_user_by_email(email)
+
+    print(email, password )
     
     if user is None:
         return None

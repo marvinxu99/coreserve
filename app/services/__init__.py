@@ -20,6 +20,7 @@ from .db_user_service import (
     get_all_users,
     get_user_by_id,
     get_user_by_username,
+    get_user_by_email,
     update_user,
     delete_user,
     verify_password

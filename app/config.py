@@ -15,7 +15,11 @@ class Config:
     SESSION_COOKIE_NAME = 'coreserve_session'  # Optional: Custom cookie name
     CACHE_TYPE = 'SimpleCache'  # Default cache type
     CACHE_DEFAULT_TIMEOUT = 900  # Default to 15 mins (for development)
-
+    MAIL_SERVER=os.getenv('MAIL_SERVER')  # Your SMTP server
+    MAIL_PORT=os.getenv('MAIL_PORT')
+    MAIL_USE_TLS=os.getenv('MAIL_USE_TLS')
+    MAIL_USERNAME=os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
 
 class DevConfig(Config):
     DEBUG = True

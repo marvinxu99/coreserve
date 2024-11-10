@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger,Integer, String, DateTime
+from sqlalchemy import Column, BigInteger,Integer, String, DateTime, Boolean
 from datetime import datetime
 import bcrypt
 
@@ -10,10 +10,15 @@ class User(db.Model):
     __tablename__ = 'user'
 
     user_id                 = Column(BigInteger, primary_key=True, autoincrement=True)
-    username                = Column(String(50), index=True, unique=True)
-    email                   = Column(String(255), index=True, nullable=True)
+    username                = Column(String(50), index=True, unique=True, nullable=True)
+    email                   = Column(String(255), index=True, nullable=False)
     password                = Column(String(128), index=True, nullable=False)
-    password_expiry_dt_tm   = Column(DateTime, default=datetime.fromisoformat(END_EFFECTIVE_DATE_ISO) )   
+    password_expiry_dt_tm   = Column(DateTime, default=datetime.fromisoformat(END_EFFECTIVE_DATE_ISO) )
+    
+    is_confirmed            = Column(Boolean, default=False)
+    is_authenticated        = Column(Boolean, default=False)
+    is_active               = Column(Boolean, default=True)
+    is_anonymous            = Column(Boolean, default=False)
 
     name_first              = Column(String(200), nullable=True)
     name_first_key          = Column(String(100), index=True, nullable=True)
@@ -39,4 +44,16 @@ class User(db.Model):
     def __repr__(self):
         return f"<Users(user_id={self.user_id}, username={self.username}"
 
+    def get_id(self):
+        return self.user_id
 
+    def get(self, id):
+        return self.user_id
+
+    # def __init__(self, id, password=None):
+    #     self.id = id
+    #     self.password = password
+    #     self.is_confirmed = False  # Track if the user has confirmed their email
+
+    # def verify_password(self, password):
+    #     return self.password == password

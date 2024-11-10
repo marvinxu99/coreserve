@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from flask import Flask
-from app.extensions import db, migrate, cache
+from app.extensions import db, migrate, cache, mail, login_manager
 from app.routes import register_routes
 from app.commands import register_commands
 from app.config import config
@@ -37,6 +37,8 @@ def create_app(config_name="development"):
     db.init_app(app)
     migrate.init_app(app, db)
     cache.init_app(app)
+    mail.init_app(app)
+    login_manager.init_app(app)
 
     # Register Blueprints
     register_routes(app)
@@ -45,3 +47,10 @@ def create_app(config_name="development"):
     register_commands(app)
        
     return app
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        return models.User.query.get(user_id)
+    except Exception as e:
+        return None
