@@ -24,7 +24,6 @@ def init_oauth(app):
     oauth.init_app(app)
 
     # print(app.config['GOOGLE_CLIENT_ID'], app.config['GOOGLE_CLIENT_SECRET'])
-
     google = oauth.register(
         name='google',
         client_id=app.config['GOOGLE_CLIENT_ID'],  # Get from config

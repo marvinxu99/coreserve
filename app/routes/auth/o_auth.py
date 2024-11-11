@@ -25,16 +25,18 @@ def register_o_auth_routes(app):
             return jsonify({"error": "Authorization failed!"}), 401
 
         # Fetch user information
-        resp = google.get('userinfo')
-        if resp.status_code != 200:
+        response = google.get('userinfo')
+        if response.status_code != 200:
             return jsonify({"error": "Failed to fetch user info!"}), 400
         
-        user_info = resp.json()
+        user_info = response.json()
 
         # Store user email and id in session
-        # session['email'] = user_info['email']
-        # session['id'] = user_info['id']
-        # session.permanent = True  # Make the session permanent
+        session['email'] = user_info['email']
+        session['id'] = user_info['id']
+        session['access_token'] = token['access_token']
+        session.permanent = True  # Make the session permanent
+        print(token['access_token'])
 
         # save user to database if not saved already.
         user = get_user_by_email(user_info['email'])
