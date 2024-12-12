@@ -1,0 +1,113 @@
+
+<style>
+.help-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 1000;
+}
+.popup-header {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.popup-body {
+  padding: 10px;
+  text-align: center;
+}
+.start-chat-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.start-chat-btn:hover {
+  background: #0056b3;
+}
+.help-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+}
+.close-btn {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+</style>
+
+<!-- Chat Popup -->
+<div>
+  <div id="help-popup" class="help-popup">
+    <div class="popup-header">
+        <span>Need Help?</span>
+        <button id="close-help" class="close-btn">&times;</button>
+    </div>
+    <div class="popup-body">
+        <p>Hi! Is there anything I can help you with?</p>
+        <button id="start-chat" class="start-chat-btn">Start Chat</button>
+    </div>
+  </div>
+  <!-- Help Button -->
+  <button id="help-btn" class="help-btn">Help</button>  
+</div>
+  
+<script>
+  document.getElementById('help-btn').addEventListener('click', function () {
+      document.getElementById('help-popup').style.display = 'block';
+      this.style.display = 'none';
+  });
+
+  document.getElementById('close-help').addEventListener('click', function () {
+      document.getElementById('help-popup').style.display = 'none';
+      document.getElementById('help-btn').style.display = 'block';
+  });
+
+  document.getElementById('start-chat').addEventListener('click', function () {
+      alert('Chat started! (You can integrate your chat functionality here.)');
+  });
+  
+  // Show popup in 10 seconds after openning the website
+  setTimeout(() => {
+      document.getElementById('help-popup').style.display = 'block';
+  }, 10000); 
+
+  // show the popup if idle for 15 seconds
+  let idleTime = 0;
+  const idleInterval = setInterval(() => { idleTime++; }, 1000);
+
+  document.onmousemove = document.onkeypress = () => { idleTime = 0; };
+
+  setInterval(() => {
+      if (idleTime >= 15) {
+          document.getElementById('help-popup').style.display = 'block';
+      }
+  }, 15000);
+
+</script>
